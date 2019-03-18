@@ -1,0 +1,26 @@
+{
+  "name": "cookietouch-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sozary/cookietouch-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sozary/cookietouch-web/issues"
+  },
+  "homepage": "https://github.com/Sozary/cookietouch-web#readme",
+  "devDependencies": {
+    "@types/node": "^11.11.3",
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10",
+    "typescript": "^3.3.3333"
+  }
+}
