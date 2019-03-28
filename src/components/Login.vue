@@ -37,7 +37,7 @@
 <script>
 import firebase from "firebase";
 import axios from "axios";
-import primus from "./primus";
+import primus from "./primus.jss";
 import SocketIO from "socket.io-client";
 export default {
     data() {
@@ -71,26 +71,43 @@ export default {
                 .catch(er => console.log(er));
         },
         createSocket: function(url) {
-            // let socket = SocketIO(url);
-            let socket = new WebSocket(
-                "wss://proxyconnection.touch.dofus.com",
-                "protocolOne"
-            );
-            socket.on("open", () => {
-                console.log("kkd");
-                return this;
+            return new primus(url, {
+                manual: true,
+                reconnect: {
+                    max: 5000,
+                    min: 500,
+                    retries: 10
+                },
+                strategy: "disconnect,timeout",
+                transformer: "engine.io",
+                transport: {}
             });
-            // return new primus(url, {
-            //     manual: true,
-            //     reconnect: {
-            //         max: 5000,
-            //         min: 500,
-            //         retries: 10
-            //     },
-            //     strategy: "disconnect,timeout",
-            //     transformer: "engine.io",
-            //     transport: {}
-            // });
+            // // let socket = SocketIO(url);
+            // let socket = new WebSocket(
+            //     "wss://proxyconnection.touch.dofus.com/primus/?STICKER=" +
+            //         this.randomString(12) +
+            //         "&transport=websocket"
+            // );
+            // console.log(
+            // "wss://proxyconnection.touch.dofus.com/primus/?STICKER=" +
+            //     this.randomString(12) +
+            //     "&transport=websocket"
+            // );
+
+            // socket.send(
+            //     JSON.stringify({
+            //         connecting: {
+            //             appVersion: "1.16.6",
+            //             buildVersion: "1.39.3",
+            //             client: "ios",
+            //             language: "fr",
+            //             server: "login"
+            //         }
+            //     })
+            // );
+            // socket.onmessage = function(event) {
+            //     console.log(event.data);
+            // };
         },
         makeSticky: function(url, sessionId) {
             const sep = url.indexOf("?") === -1 ? "?" : "&";
@@ -136,7 +153,16 @@ export default {
                         let dataUrl = "https://proxyconnection.touch.dofus.com";
                         let sessionid = this.randomString(16);
                         let currentUrl = this.makeSticky(dataUrl, sessionid);
+                        currentUrl =
+                            "wss://proxyconnection.touch.dofus.com/primus/?STICKER=" +
+                            this.randomString(16) +
+                            "&transport=websocket";
                         let socket = this.createSocket(currentUrl);
+                        console.log(currentUrl);
+
+                        socket.on("open", () => {
+                            console.log("here");
+                        });
                     })
                     .catch(err => console.log(err));
             })
